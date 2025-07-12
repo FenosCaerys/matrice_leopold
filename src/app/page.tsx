@@ -1,102 +1,197 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import Image from "next/image";
+import Link from "next/link";
+
+interface Project {
+  id: string;
+  name: string;
+  description: string | null;
+  createdAt: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showNewProject, setShowNewProject] = useState(false);
+  const [newProject, setNewProject] = useState({ name: '', description: '' });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  // Charger les projets au chargement de la page
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects');
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des projets');
+        }
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Gérer la création d'un nouveau projet
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newProject),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erreur lors de la création du projet');
+      }
+
+      const createdProject = await response.json();
+      setProjects([createdProject, ...projects]);
+      setNewProject({ name: '', description: '' });
+      setShowNewProject(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+    }
+  };
+
+  return (
+    <div className="min-h-screen p-8 max-w-6xl mx-auto">
+      <header className="mb-12 text-center">
+        <h1 className="text-3xl font-bold mb-2">Matrice de Léopold</h1>
+        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          Outil d'évaluation des impacts environnementaux pour les projets de génie civil
+        </p>
+      </header>
+
+      <main>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-semibold">Mes Projets</h2>
+          <button 
+            onClick={() => setShowNewProject(!showNewProject)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {showNewProject ? 'Annuler' : 'Nouveau Projet'}
+          </button>
         </div>
+
+        {/* Formulaire de création de projet */}
+        {showNewProject && (
+          <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg mb-8 shadow-md">
+            <h3 className="text-xl font-medium mb-4">Créer un nouveau projet</h3>
+            <form onSubmit={handleCreateProject}>
+              <div className="mb-4">
+                <label htmlFor="name" className="block mb-2 font-medium">
+                  Nom du projet *
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={newProject.name}
+                  onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  required
+                  minLength={3}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="description" className="block mb-2 font-medium">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  value={newProject.description}
+                  onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+                >
+                  Créer le projet
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* Messages d'erreur */}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <p>{error}</p>
+            <button 
+              onClick={() => setError(null)}
+              className="text-sm underline ml-2"
+            >
+              Fermer
+            </button>
+          </div>
+        )}
+
+        {/* Liste des projets */}
+        {loading ? (
+          <div className="text-center py-8">
+            <p>Chargement des projets...</p>
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg text-center">
+            <h3 className="text-xl font-medium mb-2">Aucun projet trouvé</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              Commencez par créer un nouveau projet pour utiliser la matrice de Léopold.
+            </p>
+            <button
+              onClick={() => setShowNewProject(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            >
+              Créer mon premier projet
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <Link
+                href={`/projects/${project.id}`}
+                key={project.id}
+                className="block bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700"
+              >
+                <h3 className="text-xl font-semibold mb-2">{project.name}</h3>
+                {project.description && (
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                    {project.description}
+                  </p>
+                )}
+                <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                  <span>
+                    Créé le {new Date(project.createdAt).toLocaleDateString()}
+                  </span>
+                  <span className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                    Voir la matrice
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400">
+        <p>Matrice de Léopold - Outil d'évaluation des impacts environnementaux</p>
+        <p className="mt-2 text-sm">
+          Basé sur la méthodologie développée par Luna B. Leopold et al. (1971)
+        </p>
       </footer>
     </div>
   );

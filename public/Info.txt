@@ -1,0 +1,83 @@
+La **matrice de Léopold** est un outil systématique utilisé dans l’évaluation des impacts environnementaux des projets de génie civil. Elle croise, sous forme de grille, les **activités du projet** (axes horizontaux) avec les **composantes environnementales** (axes verticaux), permettant de repérer et d’analyser chaque interaction susceptible d’occasionner un impact .
+
+---
+
+### **Concept**
+
+Chaque case identifie un impact potentiel entre une action du projet et un facteur environnemental. On y attribue deux valeurs :
+
+* **Magnitude** (ou ampleur) : mesurée de manière plus factuelle, elle évalue l’étendue ou la gravité de l’impact (par exemple de –10 à +10) 
+* **Importance** : valeur qualitative ou subjective (échelle généralement 1‑10) indiquant la gravité perçue ou la sensibilité du facteur impacté .
+
+Ces deux dimensions permettent une distinction claire entre ce qui est objectivement significatif et ce qui l’est en termes de jugement environnemental ou social.
+
+---
+
+### **Entrées possibles**
+
+Pour construire une matrice adaptée à un projet de génie civil, il faut :
+
+* **Lister les activités** : phases du projet (préparation, construction, exploitation, maintenance), ouvrages (excavation, bétonnage, transport, gestion des déchets, etc.) 
+
+* **Définir les composantes du milieu récepteur** : facteurs physiques (sols, air, eau), biologiques (faune, flore), sociaux ou économiques (santé, sécurité, patrimoine) à l’échelle du site et de son aire d’influence .
+
+* **Attribution des scores** : chaque intersection significative est cotée selon la magnitude et l’importance, après avoir sélectionné les cases pertinentes (souvent 25‑50 sur les 8 800 possibles) .
+
+---
+
+### **Résultats**
+
+* **Matrice complète** : contient les valeurs attribuées pour chaque impact identifié, ce qui permet de produire un tableau structuré des interactions activités-environnement .
+
+* **Synthèse narrative** : un rapport explicatif accompagne la matrice, décrivant et justifiant chaque note de magnitude et d’importance, ainsi que les raisons des choix d’impacts pris en compte .
+
+* **Priorisation des impacts** : les impacts jugés les plus significatifs sont mis en avant (forte magnitude et importance), ce qui permet d’orienter la définition des mesures d’atténuation .
+
+* **Génération de recommandations ou PGES** (plan de gestion environnementale et sociale) : proposition de mesures correctives et de suivi ciblé des impacts les plus critiques .
+
+---
+
+### **Résumé**
+
+La matrice de Léopold est donc un outil à la fois descriptif et évaluatif, permettant de structurer l’étude des impacts environnementaux d’un projet, en soulignant les interactions pertinentes entre activités de chantier et éléments du milieu. Elle fournit une base chiffrée et qualitative pour prioriser les impacts, justifier les conclusions et proposer des mesures de gestion environnementale adaptées.
+
+Voici un exemple simplifié de matrice de Léopold appliquée à un projet de construction routière. On a sélectionné cinq activités clé et cinq composantes environnementales. Chaque case porte deux chiffres :
+
+M pour la magnitude (–10 à +10)
+
+I pour l’importance (1 à 10)
+
+Activités ↓ \ Facteurs →	Air (émissions)	Bruit	Eau (ruissellement)	Faune	Circulation
+1. Terrassement	(‑6, 8)	(‑2, 5)	(‑7, 9)	(‑5, 7)	( 0, 1)
+2. Dynamitage	( 0, 3)	(‑9, 10)	( 0, 2)	(‑8, 9)	( 0, 1)
+3. Bétonnage de structure	( 0, 2)	( 0, 1)	(‑4, 6)	( 0, 1)	( 0, 1)
+4. Mise en place d’enrobé	( 5, 6)	( 1, 3)	( 0, 2)	( 0, 1)	( 0, 1)
+5. Mise en service	( 2, 4)	( 3, 5)	( 1, 3)	( 1, 4)	(10, 10)
+
+Interprétation :
+
+Terrassement vs eau (‑7, 9)
+
+Forte magnitude négative (‑7) : important risque d’érosion et de turbidité.
+
+Importance élevée (9) : enjeu majeur pour la qualité des eaux de surface.
+
+Dynamitage vs bruit (‑9, 10)
+
+Très forte nuisance sonore (‑9), jugée critique (10) pour les riverains.
+
+Mise en place d’enrobé vs air (+5, 6)
+
+Émissions de COV et particules positives (+5), importance modérée (6).
+
+Mise en service vs circulation (+10, 10)
+
+Impact majeur positif pour le transport (+10) et jugé prioritaire (10).
+
+À partir de cette matrice :
+
+On repère les cases à forte vocation d’atténuation (par ex. dynamitage et bruit, terrassement et eau).
+
+On peut rédiger un plan de mesures ciblé (bâches anti-poussière, bassins de décantation, planification des tirs).
+
+On justifie ensuite chaque note dans un rapport accompagnant la matrice et on en déduit les priorités du Plan de Gestion Environnementale et Sociale (PGES).
